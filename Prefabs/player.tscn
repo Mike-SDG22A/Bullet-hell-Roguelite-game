@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bajro0f0hooq7"]
+
+[ext_resource type="CapsuleMesh" uid="uid://b8rl1kcfb812p" path="res://PlayerModel.tres" id="1_rxu6n"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_krsic"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01049, 0)
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" type="Node3D" parent="Pivot"]
+
+[node name="PlayerModel" type="MeshInstance3D" parent="Pivot/Character"]
+mesh = ExtResource("1_rxu6n")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_krsic")

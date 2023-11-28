@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://d26cdyhcp41fb"]
+
+[ext_resource type="CapsuleMesh" uid="uid://cg3hoivn3q7fv" path="res://EnemyModel.tres" id="1_o8t6d"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1l42j"]
+
+[node name="Enemy" type="CharacterBody3D"]
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" type="Node3D" parent="Pivot"]
+
+[node name="EnemyModel" type="MeshInstance3D" parent="Pivot/Character"]
+mesh = ExtResource("1_o8t6d")
+skeleton = NodePath("../../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1l42j")

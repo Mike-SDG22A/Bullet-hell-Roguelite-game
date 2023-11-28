@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://cg62o0cd7rdvw"]
+
+[ext_resource type="BoxMesh" uid="uid://clcxqwb5uptuh" path="res://Cube.tres" id="1_e74ch"]
+[ext_resource type="PackedScene" uid="uid://bajro0f0hooq7" path="res://Prefabs/player.tscn" id="2_3x0a7"]
+[ext_resource type="Script" path="res://Scripts/PlayerScript.cs" id="3_nbi35"]
+[ext_resource type="PackedScene" uid="uid://d26cdyhcp41fb" path="res://Prefabs/enemy.tscn" id="4_54pag"]
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="5_oemem"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0a301"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(48.5398, 0, 0, 0, 1, 0, 0, 0, 38.4764, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_0a301")
+
+[node name="Cube2" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
+mesh = ExtResource("1_e74ch")
+skeleton = NodePath("../../..")
+
+[node name="Player" parent="." instance=ExtResource("2_3x0a7")]
+transform = Transform3D(1.00008, 0, 0, 0, 1.00008, 0, 0, 0, 1.00008, 0.0106161, 1.50034, 0.000952482)
+script = ExtResource("3_nbi35")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13.6915, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.949263, -0.269758, 0.161649, -0.0163136, 0.471084, 0.881938, -0.31406, -0.839828, 0.442782, 0, 4.94392, 8.37302)
+
+[node name="Enemy" parent="." instance=ExtResource("4_54pag")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.15462, 1.67636, 2.7948)
+script = ExtResource("5_oemem")
+
+[node name="GUI" type="MarginContainer" parent="."]
+offset_right = 301.0
+offset_bottom = 107.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
+layout_mode = 2
+
+[node name="Hp" type="Label" parent="GUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Level" type="Label" parent="GUI/VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="GUI/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI/VBoxContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Exp" type="Label" parent="GUI/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
