@@ -19,8 +19,8 @@ public partial class BuffObj : Node
 
 	public void AddBuff()
 	{
+		player.amountOfLevelsGained--;
         player.buffs.Add(new Buff(buff));
         generator.RandomizeBuffs();
-		generator.Visible = false;
     }
 }

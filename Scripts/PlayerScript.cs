@@ -17,6 +17,10 @@ public partial class PlayerScript : CharacterBody3D
     [Export] public float level { get; set; } = 1;
     [Export] public int money { get; set; } = 0;
 
+    [Export] InstanciateEnemies waveScript;
+
+    public int amountOfLevelsGained;
+
     public List<Weapon> weapons = new List<Weapon> ();
     
     public List<Buff> buffs = new List<Buff>();
@@ -49,7 +53,18 @@ public partial class PlayerScript : CharacterBody3D
             exp = 0;
             hp = maxHP;
             expNeeded = (int)(expNeeded * 1.5f);
+            amountOfLevelsGained++;
+        }
+
+
+        if (amountOfLevelsGained > 0 && waveScript.waveEnded)
+        {
             generator.Visible = true;
+        }
+        else if (amountOfLevelsGained <= 0 && waveScript.waveEnded) 
+        {
+            generator.Visible = false;
+            waveScript.waveEnded = false;
         }
 
         GetTree().CurrentScene.GetNode<Label>("GUI/VBoxContainer/Hp").Text = "Health: " + hp + " / " + maxHP ;
