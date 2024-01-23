@@ -1,18 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://bajro0f0hooq7"]
+[gd_scene load_steps=3 format=3 uid="uid://btltojufwad5a"]
 
-[ext_resource type="CapsuleMesh" uid="uid://b8rl1kcfb812p" path="res://PlayerModel.tres" id="1_rxu6n"]
+[ext_resource type="CapsuleMesh" uid="uid://b8rl1kcfb812p" path="res://Meshes/PlayerModel.tres" id="1_8p5b4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_krsic"]
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01049, 0)
+collision_layer = 9
+collision_mask = 8
 
 [node name="Pivot" type="Node3D" parent="."]
 
 [node name="Character" type="Node3D" parent="Pivot"]
 
 [node name="PlayerModel" type="MeshInstance3D" parent="Pivot/Character"]
-mesh = ExtResource("1_rxu6n")
+mesh = ExtResource("1_8p5b4")
 skeleton = NodePath("../../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

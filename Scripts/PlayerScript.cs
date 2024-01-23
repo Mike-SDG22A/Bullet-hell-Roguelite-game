@@ -1,22 +1,43 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class PlayerScript : CharacterBody3D
 {
-    [Export] public float speed { get; set; } = 14;
+    const float BASE_HP = 100;
+    float maxHP = BASE_HP;
+    [Export] public float hp { get; set; } = BASE_HP;
+
+    const float BASE_SPEED = 14;
+    [Export] public float speed { get; set; } = BASE_SPEED;
+
     [Export] public float fallAccel { get; set; } = 75;
-    [Export] public int hp { get; set; } = 100;
-    [Export] public float exp { get; set; } = 0;
-    [Export] public float expNeeded { get; set; } = 100;
+    [Export] private int exp { get; set; } = 0;
+    [Export] private int expNeeded { get; set; } = 100;
     [Export] public float level { get; set; } = 1;
     [Export] public int money { get; set; } = 0;
 
+    public List<Weapon> weapons = new List<Weapon> ();
+    
+    public List<Buff> buffs = new List<Buff>();
+
+    [Export] public RandomBuffGenerator generator;
 
     private Vector3 _targetVelocity = Vector3.Zero;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        foreach(var obj in GetChildren())
+        {
+            if (obj is Weapon weapon)
+            {
+                if (!weapons.Contains(weapon))
+                {
+                    weapons.Add(weapon);
+                }
+            }
+        }
 
     }
 
@@ -25,13 +46,22 @@ public partial class PlayerScript : CharacterBody3D
         if (exp >= expNeeded)
         {
             level++;
-            exp -= expNeeded;
-            expNeeded *= 1.5f;
+            exp = 0;
+            hp = maxHP;
+            expNeeded = (int)(expNeeded * 1.5f);
+            generator.Visible = true;
         }
 
-        GetTree().CurrentScene.GetNode<Label>("GUI/VBoxContainer/Hp").Text = "Health: " + hp;
+        GetTree().CurrentScene.GetNode<Label>("GUI/VBoxContainer/Hp").Text = "Health: " + hp + " / " + maxHP ;
         GetTree().CurrentScene.GetNode<Label>("GUI/VBoxContainer/HBoxContainer/HBoxContainer/Level").Text = "Level: " + level;
         GetTree().CurrentScene.GetNode<Label>("GUI/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer/Exp").Text = "Exp: " + exp + "/" + expNeeded;
+
+
+        GetBuffs();
+        if (speed > BASE_SPEED * 2)
+        {
+            speed = BASE_SPEED * 2;
+        }
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,7 +72,10 @@ public partial class PlayerScript : CharacterBody3D
         Movement(delta);
     }
 
-
+    public void AddWeapon(Weapon weapon)
+    {
+        weapons.Add(weapon);
+    }
 
     void Movement(double delta)
     {
@@ -95,9 +128,44 @@ public partial class PlayerScript : CharacterBody3D
         return null;
     }
 
-    void AddExp(float exp)
+    public void AddExp(int exp)
     {
         this.exp += exp;
     }
 
+    public void GetBuffs()
+    {
+        float attack = 0;
+        float health = 0;
+        float movementSpeed = 0;
+        float attackSpeed = 0;
+
+        foreach(Buff buff in buffs)
+        {
+            switch (buff.stat) 
+            {
+                case "Attack":
+                    attack += buff.amount;
+                    break;
+                case "Health":
+                    health += buff.amount;
+                    break;
+                case "MovementSpeed":
+                    movementSpeed += buff.amount;
+                    break;
+                case "AttackSpeed":
+                    attackSpeed += buff.amount;
+                    break;
+            }
+        }
+
+        maxHP = BASE_HP + health;
+        speed = BASE_SPEED * (movementSpeed + 1);
+
+        foreach (Weapon weapon in weapons) 
+        {
+            weapon.IncreaseDmg(attack + 1);
+            weapon.IncreaseAttackSpeed(attackSpeed + 1);
+        }
+    }
 }

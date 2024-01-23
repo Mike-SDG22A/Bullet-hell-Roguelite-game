@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccjvabhqjisrn"]
+
+[ext_resource type="Script" path="res://Scripts/RangedEnemy.cs" id="1_5llh5"]
+[ext_resource type="PackedScene" uid="uid://kssxt2tab8n4" path="res://Prefabs/gun.tscn" id="2_cf8i8"]
+[ext_resource type="CapsuleMesh" uid="uid://cg3hoivn3q7fv" path="res://Meshes/EnemyModel.tres" id="2_hc3dr"]
+[ext_resource type="PackedScene" uid="uid://bpki0n51gv6oi" path="res://Prefabs/EnemyBullet.tscn" id="3_43vpy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1l42j"]
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_5llh5")
+minDistance = 5.0
+hp = 1.0
+speed = 6.0
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" type="Node3D" parent="Pivot"]
+
+[node name="Gun" parent="Pivot/Character" instance=ExtResource("2_cf8i8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+bullet = ExtResource("3_43vpy")
+isEnemyGun = true
+
+[node name="EnemyModel" type="MeshInstance3D" parent="Pivot/Character"]
+mesh = ExtResource("2_hc3dr")
+skeleton = NodePath("../../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1l42j")

@@ -1,0 +1,9 @@
+[gd_resource type="SphereMesh" load_steps=2 format=3 uid="uid://dm8adtck21g63"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sldkd"]
+albedo_color = Color(0.741176, 0.780392, 0.580392, 1)
+
+[resource]
+material = SubResource("StandardMaterial3D_sldkd")
+height = 1.5
+is_hemisphere = true

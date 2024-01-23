@@ -1,38 +1,67 @@
-[gd_scene load_steps=7 format=3 uid="uid://cg62o0cd7rdvw"]
+[gd_scene load_steps=14 format=3 uid="uid://cg62o0cd7rdvw"]
 
-[ext_resource type="BoxMesh" uid="uid://clcxqwb5uptuh" path="res://Cube.tres" id="1_e74ch"]
-[ext_resource type="PackedScene" uid="uid://bajro0f0hooq7" path="res://Prefabs/player.tscn" id="2_3x0a7"]
+[ext_resource type="BoxMesh" uid="uid://clcxqwb5uptuh" path="res://Meshes/Cube.tres" id="1_0nxre"]
+[ext_resource type="Script" path="res://Scripts/InstanciateEnemies.cs" id="1_087qc"]
+[ext_resource type="PackedScene" uid="uid://btltojufwad5a" path="res://Prefabs/player.tscn" id="2_3x0a7"]
 [ext_resource type="Script" path="res://Scripts/PlayerScript.cs" id="3_nbi35"]
+[ext_resource type="PackedScene" uid="uid://kssxt2tab8n4" path="res://Prefabs/gun.tscn" id="4_7t3na"]
 [ext_resource type="PackedScene" uid="uid://d26cdyhcp41fb" path="res://Prefabs/enemy.tscn" id="4_54pag"]
-[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="5_oemem"]
+[ext_resource type="Script" path="res://Scripts/RandomBuffGenerator.cs" id="5_r5abi"]
+[ext_resource type="PackedScene" uid="uid://ccjvabhqjisrn" path="res://Prefabs/RangedEnemy.tscn" id="6_hffgw"]
+[ext_resource type="Script" path="res://Scripts/BuffObj.cs" id="6_t54he"]
+[ext_resource type="Script" path="res://Scripts/LevelUpButton.cs" id="7_xknd2"]
+[ext_resource type="PackedScene" uid="uid://kdtnga5bvq5b" path="res://Prefabs/cube.tscn" id="11_t57n6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0a301"]
+
+[sub_resource type="Environment" id="Environment_8gypa"]
+background_mode = 1
+background_color = Color(0.235294, 0.337255, 0.67451, 1)
 
 [node name="Node3D" type="Node3D"]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(48.5398, 0, 0, 0, 1, 0, 0, 0, 38.4764, 0, 0, 0)
+transform = Transform3D(75, 0, 0, 0, 1, 0, 0, 0, 75, 0, 0, 0)
+collision_layer = 15
+collision_mask = 15
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_0a301")
 
 [node name="Cube2" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
-mesh = ExtResource("1_e74ch")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000113525, 0.00812101, 7.6917e-05)
+mesh = ExtResource("1_0nxre")
 skeleton = NodePath("../../..")
 
-[node name="Player" parent="." instance=ExtResource("2_3x0a7")]
-transform = Transform3D(1.00008, 0, 0, 0, 1.00008, 0, 0, 0, 1.00008, 0.0106161, 1.50034, 0.000952482)
+[node name="Player" parent="." node_paths=PackedStringArray("generator") instance=ExtResource("2_3x0a7")]
+transform = Transform3D(1.00008, 0, 0, 0, 1.00008, 0, 0, 0, 1.00008, 0.150969, 1.49132, 0.549134)
 script = ExtResource("3_nbi35")
+generator = NodePath("../GUI/LevelUpMenu")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 13.6915, 0)
+environment = SubResource("Environment_8gypa")
+
+[node name="Gun6" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5962, -0.253, 1.035)
+
+[node name="Gun5" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5962, -0.253, -1.035)
+
+[node name="Gun4" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7258, -0.253, -1.035)
+
+[node name="Gun3" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0648018, -0.253, -1.64)
+
+[node name="Gun2" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.72624, -0.253427, 1.03533)
+
+[node name="Gun" parent="Player" instance=ExtResource("4_7t3na")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0648018, -0.253, 1.64)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.949263, -0.269758, 0.161649, -0.0163136, 0.471084, 0.881938, -0.31406, -0.839828, 0.442782, 0, 4.94392, 8.37302)
-
-[node name="Enemy" parent="." instance=ExtResource("4_54pag")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.15462, 1.67636, 2.7948)
-script = ExtResource("5_oemem")
 
 [node name="GUI" type="MarginContainer" parent="."]
 offset_right = 301.0
@@ -65,3 +94,432 @@ layout_mode = 2
 
 [node name="Exp" type="Label" parent="GUI/VBoxContainer/HBoxContainer/HBoxContainer2/VBoxContainer"]
 layout_mode = 2
+
+[node name="LevelUpMenu" type="Control" parent="GUI"]
+layout_mode = 2
+script = ExtResource("5_r5abi")
+
+[node name="BuffItem" type="RichTextLabel" parent="GUI/LevelUpMenu" node_paths=PackedStringArray("text")]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 156.0
+offset_right = 384.0
+offset_bottom = 376.0
+text = Object(TextEdit,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":4.0,"offset_top":6.0,"offset_right":168.0,"offset_bottom":157.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"mouse_filter":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":1,"shortcut_context":null,"theme":null,"theme_type_variation":&"","text":"","placeholder_text":"","editable":true,"context_menu_enabled":true,"shortcut_keys_enabled":true,"selecting_enabled":true,"deselect_on_focus_loss_enabled":true,"drag_and_drop_selection_enabled":true,"virtual_keyboard_enabled":true,"middle_mouse_paste_enabled":true,"wrap_mode":1,"autowrap_mode":3,"highlight_all_occurrences":false,"highlight_current_line":false,"draw_control_chars":false,"draw_tabs":false,"draw_spaces":false,"syntax_highlighter":null,"scroll_smooth":false,"scroll_v_scroll_speed":80.0,"scroll_past_end_of_file":false,"scroll_vertical":0.0,"scroll_horizontal":0,"scroll_fit_content_height":false,"minimap_draw":false,"minimap_width":80,"caret_type":0,"caret_blink":false,"caret_blink_interval":0.65,"caret_draw_when_editable_disabled":false,"caret_move_on_right_click":true,"caret_mid_grapheme":true,"caret_multiple":true,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+script = ExtResource("6_t54he")
+text = NodePath("TextEdit")
+
+[node name="PanelContainer" type="PanelContainer" parent="GUI/LevelUpMenu/BuffItem"]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 223.0
+
+[node name="Button" type="Button" parent="GUI/LevelUpMenu/BuffItem"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 175.0
+offset_right = 144.0
+offset_bottom = 206.0
+text = "Select
+"
+script = ExtResource("7_xknd2")
+
+[node name="TextEdit" type="TextEdit" parent="GUI/LevelUpMenu/BuffItem"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 168.0
+offset_bottom = 157.0
+wrap_mode = 1
+
+[node name="BuffItem3" type="RichTextLabel" parent="GUI/LevelUpMenu" node_paths=PackedStringArray("text")]
+layout_mode = 0
+offset_left = 462.0
+offset_top = 156.0
+offset_right = 638.0
+offset_bottom = 376.0
+text = Object(TextEdit,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":4.0,"offset_top":6.0,"offset_right":168.0,"offset_bottom":157.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"mouse_filter":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":1,"shortcut_context":null,"theme":null,"theme_type_variation":&"","text":"","placeholder_text":"","editable":true,"context_menu_enabled":true,"shortcut_keys_enabled":true,"selecting_enabled":true,"deselect_on_focus_loss_enabled":true,"drag_and_drop_selection_enabled":true,"virtual_keyboard_enabled":true,"middle_mouse_paste_enabled":true,"wrap_mode":1,"autowrap_mode":3,"highlight_all_occurrences":false,"highlight_current_line":false,"draw_control_chars":false,"draw_tabs":false,"draw_spaces":false,"syntax_highlighter":null,"scroll_smooth":false,"scroll_v_scroll_speed":80.0,"scroll_past_end_of_file":false,"scroll_vertical":0.0,"scroll_horizontal":0,"scroll_fit_content_height":false,"minimap_draw":false,"minimap_width":80,"caret_type":0,"caret_blink":false,"caret_blink_interval":0.65,"caret_draw_when_editable_disabled":false,"caret_move_on_right_click":true,"caret_mid_grapheme":true,"caret_multiple":true,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+script = ExtResource("6_t54he")
+buffNum = 2
+text = NodePath("TextEdit")
+
+[node name="PanelContainer" type="PanelContainer" parent="GUI/LevelUpMenu/BuffItem3"]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 223.0
+
+[node name="Button" type="Button" parent="GUI/LevelUpMenu/BuffItem3"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 175.0
+offset_right = 144.0
+offset_bottom = 206.0
+text = "Select
+"
+script = ExtResource("7_xknd2")
+
+[node name="TextEdit" type="TextEdit" parent="GUI/LevelUpMenu/BuffItem3"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 168.0
+offset_bottom = 157.0
+wrap_mode = 1
+
+[node name="BuffItem2" type="RichTextLabel" parent="GUI/LevelUpMenu" node_paths=PackedStringArray("text")]
+layout_mode = 0
+offset_left = 719.0
+offset_top = 156.0
+offset_right = 895.0
+offset_bottom = 376.0
+text = Object(TextEdit,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":4.0,"offset_top":6.0,"offset_right":168.0,"offset_bottom":157.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":1,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":2,"mouse_filter":0,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":1,"shortcut_context":null,"theme":null,"theme_type_variation":&"","text":"","placeholder_text":"","editable":true,"context_menu_enabled":true,"shortcut_keys_enabled":true,"selecting_enabled":true,"deselect_on_focus_loss_enabled":true,"drag_and_drop_selection_enabled":true,"virtual_keyboard_enabled":true,"middle_mouse_paste_enabled":true,"wrap_mode":1,"autowrap_mode":3,"highlight_all_occurrences":false,"highlight_current_line":false,"draw_control_chars":false,"draw_tabs":false,"draw_spaces":false,"syntax_highlighter":null,"scroll_smooth":false,"scroll_v_scroll_speed":80.0,"scroll_past_end_of_file":false,"scroll_vertical":0.0,"scroll_horizontal":0,"scroll_fit_content_height":false,"minimap_draw":false,"minimap_width":80,"caret_type":0,"caret_blink":false,"caret_blink_interval":0.65,"caret_draw_when_editable_disabled":false,"caret_move_on_right_click":true,"caret_mid_grapheme":true,"caret_multiple":true,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+script = ExtResource("6_t54he")
+buffNum = 1
+text = NodePath("TextEdit")
+
+[node name="PanelContainer" type="PanelContainer" parent="GUI/LevelUpMenu/BuffItem2"]
+layout_mode = 0
+offset_right = 174.0
+offset_bottom = 223.0
+
+[node name="Button" type="Button" parent="GUI/LevelUpMenu/BuffItem2"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 175.0
+offset_right = 144.0
+offset_bottom = 206.0
+text = "Select
+"
+script = ExtResource("7_xknd2")
+
+[node name="TextEdit" type="TextEdit" parent="GUI/LevelUpMenu/BuffItem2"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 168.0
+offset_bottom = 157.0
+wrap_mode = 1
+
+[node name="EnemySpawner" type="Node3D" parent="." node_paths=PackedStringArray("body")]
+transform = Transform3D(48.5398, 0, 0, 0, 1, 0, 0, 0, 38.4764, 0, 0, 0)
+script = ExtResource("1_087qc")
+obj = Array[PackedScene]([ExtResource("4_54pag"), ExtResource("6_hffgw")])
+body = NodePath("../StaticBody3D")
+maxTimer = 0.5
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Cube" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.49846, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, 36.8569, 1.31251, -38.2426)
+
+[node name="Cube2" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(9.24957, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, 32.5922, 0.398709, -38.4759)
+
+[node name="Cube3" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 32.5922, 0.398709, -38.4759)
+
+[node name="Cube4" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 27.8009, -0.387893, -37.9657)
+
+[node name="Cube5" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 26.4372, 0.330834, -38.1777)
+
+[node name="Cube6" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.73856, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 24.4645, -0.41619, -38.4527)
+
+[node name="Cube7" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 19.9298, -0.0306844, -38.7001)
+
+[node name="Cube8" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 17.0991, -0.162901, -38.4413)
+
+[node name="Cube9" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 15.5407, 0.550171, -38.9383)
+
+[node name="Cube10" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 12.6803, 0.156094, -38.7686)
+
+[node name="Cube11" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 9.35539, 0.753679, -39.0289)
+
+[node name="Cube12" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.36547, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 6.19476, -0.149785, -38.5572)
+
+[node name="Cube13" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(4.56883, 0, 0, 0, 4.27254, 0, 0, 0, 3.66226, 2.09126, 0.61869, -39.1554)
+
+[node name="Cube14" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.49846, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, -1.35823, 1.31251, -38.2426)
+
+[node name="Cube15" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(9.24957, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, -5.62293, 0.398709, -38.4759)
+
+[node name="Cube16" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -5.62293, 0.398709, -38.4759)
+
+[node name="Cube17" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -10.4142, -0.387893, -37.9657)
+
+[node name="Cube18" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -11.778, 0.330834, -38.1777)
+
+[node name="Cube19" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.73856, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -13.7507, -0.41619, -38.4527)
+
+[node name="Cube20" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -18.2854, -0.0306844, -38.7001)
+
+[node name="Cube21" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -21.116, -0.162901, -38.4413)
+
+[node name="Cube22" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -22.6745, 0.550171, -38.9383)
+
+[node name="Cube23" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -25.5349, 0.156094, -38.7686)
+
+[node name="Cube24" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -28.8598, 0.753679, -39.0289)
+
+[node name="Cube25" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.36547, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -32.0204, -0.149785, -38.5572)
+
+[node name="Cube26" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(4.56883, 0, 0, 0, 4.27254, 0, 0, 0, 3.66226, -36.1239, 0.61869, -39.1554)
+
+[node name="Cube27" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.49846, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, 36.8569, 1.31251, 39.1071)
+
+[node name="Cube28" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(9.24957, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, 32.5922, 0.398709, 38.8739)
+
+[node name="Cube29" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 32.5922, 0.398709, 38.8739)
+
+[node name="Cube30" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 27.8009, -0.387893, 39.3841)
+
+[node name="Cube31" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 26.4372, 0.330834, 39.1721)
+
+[node name="Cube32" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.73856, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 24.4645, -0.41619, 38.897)
+
+[node name="Cube33" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, 19.9298, -0.0306844, 38.6496)
+
+[node name="Cube34" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 17.0991, -0.162901, 38.9085)
+
+[node name="Cube35" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 15.5407, 0.550171, 38.4115)
+
+[node name="Cube36" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 12.6803, 0.156094, 38.5812)
+
+[node name="Cube37" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 9.35539, 0.753679, 38.3208)
+
+[node name="Cube38" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.36547, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, 6.19476, -0.149785, 38.7926)
+
+[node name="Cube39" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(4.56883, 0, 0, 0, 4.27254, 0, 0, 0, 3.66226, 2.09126, 0.61869, 38.1943)
+
+[node name="Cube40" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.49846, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, -1.35823, 1.31251, 39.1071)
+
+[node name="Cube41" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(9.24957, 0, 0, 0, 2.7377, 0, 0, 0, 3.01487, -5.62293, 0.398709, 38.8739)
+
+[node name="Cube42" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -5.62293, 0.398709, 38.8739)
+
+[node name="Cube43" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -10.4142, -0.387893, 39.3841)
+
+[node name="Cube44" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.189, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -11.778, 0.330834, 39.1721)
+
+[node name="Cube45" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.73856, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -13.7507, -0.41619, 38.897)
+
+[node name="Cube46" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.55875, 0, 0, 0, 3.22912, -18.2854, -0.0306844, 38.6496)
+
+[node name="Cube47" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -21.116, -0.162901, 38.9085)
+
+[node name="Cube48" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -22.6745, 0.550171, 38.4115)
+
+[node name="Cube49" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -25.5349, 0.156094, 38.5812)
+
+[node name="Cube50" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(3.87867, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -28.8598, 0.753679, 38.3208)
+
+[node name="Cube51" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(6.36547, 0, 0, 0, 3.23977, 0, 0, 0, 3.4947, -32.0204, -0.149785, 38.7926)
+
+[node name="Cube52" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(4.56883, 0, 0, 0, 4.27254, 0, 0, 0, 3.66226, -36.1239, 0.61869, 38.1943)
+
+[node name="Cube53" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.52922e-07, 0, 3.01487, 0, 2.7377, 0, -3.49846, 0, -1.31784e-07, -37.8954, 1.31251, -35.987)
+
+[node name="Cube54" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-4.04312e-07, 0, 3.01487, 0, 2.7377, 0, -9.24957, 0, -1.31784e-07, -38.1287, 0.398709, -31.7223)
+
+[node name="Cube55" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -38.1287, 0.398709, -31.7223)
+
+[node name="Cube56" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -37.6185, -0.387893, -26.931)
+
+[node name="Cube57" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -37.8305, 0.330834, -25.5672)
+
+[node name="Cube58" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.94552e-07, 0, 3.22912, 0, 3.55875, 0, -6.73856, 0, -1.41149e-07, -38.1055, -0.41619, -23.5945)
+
+[node name="Cube59" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.22912, 0, 3.55875, 0, -3.87867, 0, -1.41149e-07, -38.353, -0.0306844, -19.0598)
+
+[node name="Cube60" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.0941, -0.162901, -16.2292)
+
+[node name="Cube61" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.5911, 0.550171, -14.6707)
+
+[node name="Cube62" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.4214, 0.156094, -11.8103)
+
+[node name="Cube63" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.6817, 0.753679, -8.48544)
+
+[node name="Cube64" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.78243e-07, 0, 3.4947, 0, 3.23977, 0, -6.36547, 0, -1.52758e-07, -38.21, -0.149785, -5.32481)
+
+[node name="Cube65" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.9971e-07, 0, 3.66226, 0, 4.27254, 0, -4.56883, 0, -1.60082e-07, -38.8083, 0.61869, -1.22131)
+
+[node name="Cube66" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.52922e-07, 0, 3.01487, 0, 2.7377, 0, -3.49846, 0, -1.31784e-07, -37.8954, 1.31251, 2.22818)
+
+[node name="Cube67" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-4.04312e-07, 0, 3.01487, 0, 2.7377, 0, -9.24957, 0, -1.31784e-07, -38.1287, 0.398709, 6.49288)
+
+[node name="Cube68" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -38.1287, 0.398709, 6.49288)
+
+[node name="Cube69" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -37.6185, -0.387893, 11.2842)
+
+[node name="Cube70" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, 3.22912, 0, 3.55875, 0, -3.189, 0, -1.41149e-07, -37.8305, 0.330834, 12.6479)
+
+[node name="Cube71" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.94552e-07, 0, 3.22912, 0, 3.55875, 0, -6.73856, 0, -1.41149e-07, -38.1055, -0.41619, 14.6206)
+
+[node name="Cube72" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.22912, 0, 3.55875, 0, -3.87867, 0, -1.41149e-07, -38.353, -0.0306844, 19.1553)
+
+[node name="Cube73" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.0941, -0.162901, 21.986)
+
+[node name="Cube74" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.5911, 0.550171, 23.5444)
+
+[node name="Cube75" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.4214, 0.156094, 26.4048)
+
+[node name="Cube76" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, 3.4947, 0, 3.23977, 0, -3.87867, 0, -1.52758e-07, -38.6817, 0.753679, 29.7297)
+
+[node name="Cube77" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.78243e-07, 0, 3.4947, 0, 3.23977, 0, -6.36547, 0, -1.52758e-07, -38.21, -0.149785, 32.8903)
+
+[node name="Cube78" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.9971e-07, 0, 3.66226, 0, 4.27254, 0, -4.56883, 0, -1.60082e-07, -38.8083, 0.61869, 36.9938)
+
+[node name="Cube79" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.52922e-07, 0, -3.01487, 0, 2.7377, 0, 3.49846, 0, -1.31784e-07, 37.8743, 1.31251, 37.8359)
+
+[node name="Cube80" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-4.04312e-07, 0, -3.01487, 0, 2.7377, 0, 9.24957, 0, -1.31784e-07, 38.1076, 0.398709, 33.5712)
+
+[node name="Cube81" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 38.1076, 0.398709, 33.5712)
+
+[node name="Cube82" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 37.5974, -0.387893, 28.7799)
+
+[node name="Cube83" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 37.8094, 0.330834, 27.4161)
+
+[node name="Cube84" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.94552e-07, 0, -3.22912, 0, 3.55875, 0, 6.73856, 0, -1.41149e-07, 38.0844, -0.41619, 25.4434)
+
+[node name="Cube85" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.22912, 0, 3.55875, 0, 3.87867, 0, -1.41149e-07, 38.3318, -0.0306844, 20.9087)
+
+[node name="Cube86" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.073, -0.162901, 18.0781)
+
+[node name="Cube87" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.57, 0.550171, 16.5196)
+
+[node name="Cube88" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.4003, 0.156094, 13.6592)
+
+[node name="Cube89" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.6606, 0.753679, 10.3343)
+
+[node name="Cube90" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.78243e-07, 0, -3.4947, 0, 3.23977, 0, 6.36547, 0, -1.52758e-07, 38.1889, -0.149785, 7.17372)
+
+[node name="Cube91" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.9971e-07, 0, -3.66226, 0, 4.27254, 0, 4.56883, 0, -1.60082e-07, 38.7871, 0.61869, 3.07021)
+
+[node name="Cube92" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.52922e-07, 0, -3.01487, 0, 2.7377, 0, 3.49846, 0, -1.31784e-07, 37.8743, 1.31251, -0.379278)
+
+[node name="Cube93" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-4.04312e-07, 0, -3.01487, 0, 2.7377, 0, 9.24957, 0, -1.31784e-07, 38.1076, 0.398709, -4.64398)
+
+[node name="Cube94" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 38.1076, 0.398709, -4.64398)
+
+[node name="Cube95" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 37.5974, -0.387893, -9.43526)
+
+[node name="Cube96" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.39396e-07, 0, -3.22912, 0, 3.55875, 0, 3.189, 0, -1.41149e-07, 37.8094, 0.330834, -10.799)
+
+[node name="Cube97" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.94552e-07, 0, -3.22912, 0, 3.55875, 0, 6.73856, 0, -1.41149e-07, 38.0844, -0.41619, -12.7717)
+
+[node name="Cube98" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.22912, 0, 3.55875, 0, 3.87867, 0, -1.41149e-07, 38.3318, -0.0306844, -17.3064)
+
+[node name="Cube99" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.073, -0.162901, -20.1371)
+
+[node name="Cube100" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.57, 0.550171, -21.6955)
+
+[node name="Cube101" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.4003, 0.156094, -24.5559)
+
+[node name="Cube102" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.69542e-07, 0, -3.4947, 0, 3.23977, 0, 3.87867, 0, -1.52758e-07, 38.6606, 0.753679, -27.8808)
+
+[node name="Cube103" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-2.78243e-07, 0, -3.4947, 0, 3.23977, 0, 6.36547, 0, -1.52758e-07, 38.1889, -0.149785, -31.0414)
+
+[node name="Cube104" parent="Map" instance=ExtResource("11_t57n6")]
+transform = Transform3D(-1.9971e-07, 0, -3.66226, 0, 4.27254, 0, 4.56883, 0, -1.60082e-07, 38.7871, 0.61869, -35.1449)

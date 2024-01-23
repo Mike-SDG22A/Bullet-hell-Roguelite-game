@@ -9,7 +9,6 @@ public partial class Movement : Node
 	public override void _Ready()
 	{
 		rb = GetNode<RigidBody3D>("RigidBody3D");
-		GD.Print(rb);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

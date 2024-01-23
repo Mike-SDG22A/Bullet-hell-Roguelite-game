@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://0dky8rbvv88d"]
+
+[ext_resource type="SphereMesh" uid="uid://dm8adtck21g63" path="res://Meshes/Bullet.tres" id="1_gcc30"]
+[ext_resource type="Script" path="res://Scripts/Bullet.cs" id="1_kgxpr"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ciaup"]
+height = 0.747953
+radius = 0.250965
+
+[node name="Bullet" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+collision_layer = 0
+collision_mask = 2
+gravity_scale = 0.0
+contact_monitor = true
+can_sleep = false
+script = ExtResource("1_kgxpr")
+speed = 20.0
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.714088, -3.12138e-08)
+
+[node name="Bullet" type="Node3D" parent="Pivot"]
+
+[node name="BulletMesh" type="MeshInstance3D" parent="Pivot/Bullet"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.712093, 3.11266e-08)
+mesh = ExtResource("1_gcc30")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.371629, 9.51909e-09)
+shape = SubResource("CylinderShape3D_ciaup")
