@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class PlayerScript : CharacterBody3D
 {
@@ -21,7 +22,8 @@ public partial class PlayerScript : CharacterBody3D
 
     public int amountOfLevelsGained;
 
-    public List<Weapon> weapons = new List<Weapon> ();
+    [Export] public Weapon[] weapons = new Weapon[6];
+    [Export] public Node3D[] weaponHolder = new Node3D[6];
     
     public List<Buff> buffs = new List<Buff>();
 
@@ -38,11 +40,10 @@ public partial class PlayerScript : CharacterBody3D
             {
                 if (!weapons.Contains(weapon))
                 {
-                    weapons.Add(weapon);
+                    AddWeapon(weapon);
                 }
             }
         }
-
     }
 
     public override void _Process(double delta)
@@ -50,7 +51,7 @@ public partial class PlayerScript : CharacterBody3D
         if (exp >= expNeeded)
         {
             level++;
-            exp = 0;
+            exp -= expNeeded;
             hp = maxHP;
             expNeeded = (int)(expNeeded * 1.5f);
             amountOfLevelsGained++;
@@ -89,7 +90,16 @@ public partial class PlayerScript : CharacterBody3D
 
     public void AddWeapon(Weapon weapon)
     {
-        weapons.Add(weapon);
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (IsInstanceValid(weapons[i])) { }
+            else 
+            {
+                weapons[i] = weapon;
+                weapon.Position = weaponHolder[i].Position;
+                break;
+            }
+        }
     }
 
     void Movement(double delta)
@@ -179,8 +189,11 @@ public partial class PlayerScript : CharacterBody3D
 
         foreach (Weapon weapon in weapons) 
         {
-            weapon.IncreaseDmg(attack + 1);
-            weapon.IncreaseAttackSpeed(attackSpeed + 1);
+            if (IsInstanceValid(weapon))
+            {
+                weapon.IncreaseDmg(attack + 1);
+                weapon.IncreaseAttackSpeed(attackSpeed + 1);
+            }
         }
     }
 }
